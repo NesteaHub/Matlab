@@ -1,0 +1,41 @@
+e = input('введите е: ');
+dy = @(x,y) y;
+dz = @(x,y) e.*(1-x.^2).*y-x;
+t0 = input('введите t0: ');
+T = input('введите T: ');
+h = input('задайте шаг: ');
+q = t0:h:T;
+y0 = input('y(t0) = ');
+z0 = input('dy(t0) = ');
+X = []; Y = []; 
+X(1) = y0; Y(1) = z0; 
+i = 2; 
+
+while t0<T
+    k1 = h*dy(y0, z0);
+    l1 = h*dz(y0, z0);
+    k2 = h*dy(y0+(k1/2), z0+(l1/2));
+    l2 = h*dz(y0+(k1/2), z0+(l1/2));
+    k3 = h*dy(y0+(k2/2), z0+(l2/2));
+    l3 = h*dz(y0+(k2/2), z0+(l2/2));
+    k4 = h*dy(y0+k3, z0+l3);
+    l4 = h*dz(y0+k3, z0+l3);
+    y0 = y0+(k1+2*k2+2*k3+k4)/6;
+    z0 = z0+(l1+2*l2+2*l3+l4)/6;
+    t0 = t0+h;
+    X(i) = y0;
+    Y(i) = z0;
+    i = i+1;
+end
+X(i-1) = [];
+Y(i-1) = [];
+figure(1);
+plot(q, X, q, Y);
+grid on;
+hold on;
+figure(2);
+plot(X,Y);
+xlabel('x');
+ylabel('y');
+grid on;
+hold on;
